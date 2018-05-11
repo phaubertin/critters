@@ -1,0 +1,13 @@
+Build Instructions
+------------------
+
+1) Ensure the SDL library is installed.
+
+2) If starting from a clean clone of the Git repository, run the following:
+./autogen.sh
+
+3) To compile and run:
+./configure
+make
+cd src
+./critters
