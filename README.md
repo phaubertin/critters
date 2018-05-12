@@ -1,11 +1,10 @@
 Critters must catch food (represented by green circles) and avoid predators
 (represented by red squares). The brain of each critter is a small feedforward
-neural network.
+neural network. Brains are trained in the background using a genetic algorithm.
 
-Brains are trained in the background using a genetic algorithm. The graphical
-user interface (GUI) is updated every 20 seconds with the five best brains of
-the current generation (which makes them absolutely useless for the first 20
-seconds).
+The graphical user interface (GUI) is updated every 20 seconds with the five
+best brains of the latest generation (which is why the critters in the GUI are
+absolutely useless for the first 20 seconds).
 
 ![Screenshot](https://raw.githubusercontent.com/phaubertin/critters/master/doc/screenshot.png)
 
@@ -107,3 +106,11 @@ randomly with uniform distribution within that pool.
 
 New genomes are created from each selected pair by recombination with mutation 
 (**src/genome.c**).
+
+Notes
+-----
+
+I reused the AVL tree implementation (**src/tree.c**) which I wrote for another 
+personal project that I started but never published, which is why it looks 
+somewhat overkill for this purpose and less well-integrated than the rest of the
+code.
