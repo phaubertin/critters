@@ -359,6 +359,8 @@ float breeder_fitness_n(breeder_t *breeder, int n) {
         genome   = breeder_iterator_next(iter);
         ++count;
     }
+    
+    breeder_iterator_free(iter);
 
     return fitness / (float)count;
 }
@@ -446,7 +448,12 @@ genome_t *breeder_iterator_next(breeder_iterator_t *iter) {
     
     node = qrt_tree_iterator_prev(iter->qrt_tree_iter);
     
-    return qrt_tree_node_value(node);
+    if(node == NULL) {
+        return NULL;
+    }
+    else {
+        return qrt_tree_node_value(node);
+    }
 }
 
 float breeder_iterator_fitness(breeder_iterator_t *iter) {
