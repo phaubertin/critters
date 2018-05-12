@@ -34,6 +34,10 @@
 #include <stdio.h>
 #endif
 
+/* This function and the next few ones use compiler intrinsic functions for SSE2
+ * instructions that act on vectors of four floating point values. The return
+ * value and all arguments of these functions are vectors of four floating point
+ * values. */
 static inline genome_f4_t mux(genome_f4_t cond, genome_f4_t vthen, genome_f4_t velse) {
     /* mux(p, a, b) = p ? a : b
      *              = p & a | ~p & b */
@@ -60,10 +64,23 @@ static inline genome_f4_t mux_if_between(genome_f4_t op, genome_f4_t low, genome
     return mux(cond, vthen, velse);
 }
 
+/* Rectifier activation function (ReLU) */
 static inline genome_f4_t relu(genome_f4_t t) {
     return mux_if_less(t, _mm_set1_ps(0.0), _mm_set1_ps(0.0), t);
 }
 
+/* Piecewise polynomial approximation of a sigmoid-like curve
+ * 
+ * The value of the function is zero for arguments under -5 and one for 
+ * arguments over 5. Between -5 and 5, the value of the function is the value of
+ * a degree 3 polynomial with the following characteristics:
+ * 
+ *  - The polynomial has value 0 at -5 and 1 at 5 so as not to have
+ *    discontinuities.
+ *  - The first derivative is zero at -5 and 5 to prevent discontinuities of
+ *    that derivative.
+ * 
+ *  */
 static inline genome_f4_t sigmoid(genome_f4_t t) {
     genome_f4_t poly;
     genome_f4_t mux1;
@@ -81,6 +98,20 @@ static inline genome_f4_t sigmoid(genome_f4_t t) {
     return mux2;
 }
 
+/* Piecewise polynomial approximation of a gaussian-like curve
+ * 
+ * The value of the function is zero for arguments under -5 and over 5. Between
+ * -5 and 0 the value of the function is the value of a degree 3 polynomial,
+ * whereas between 0 and 5, it is the value of that same polynomial computed on
+ * the inverse of the argument (i.e. p(-x)). The coefficients of the polynomial
+ * have been computed with the following constraints in mind:
+ * 
+ *  - The polynomial has value 0 at -5 and 1 at 0 so as not to have
+ *    discontinuities.
+ *  - The first derivative is zero at -5 and 0 to prevent discontinuities of
+ *    that derivative. 
+
+ *  */
 static inline genome_f4_t gaussian(genome_f4_t t) {
     genome_f4_t a;
     genome_f4_t poly;

@@ -43,7 +43,7 @@ struct critter_t {
     genome_t        *genome;
     brain_control_t  brain_control;
     critter_t       *next;
-    float           angle;
+    float            angle;
     int              food_count;
     int              danger_count;
             

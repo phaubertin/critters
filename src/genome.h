@@ -69,6 +69,7 @@
 
 typedef struct genome_t genome_t;
 
+/* A vector of four 32-bit floating-point values */
 typedef float genome_f4_t __attribute__ ((vector_size (16)));
 
 

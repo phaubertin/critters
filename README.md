@@ -107,10 +107,45 @@ randomly with uniform distribution within that pool.
 New genomes are created from each selected pair by recombination with mutation 
 (**src/genome.c**).
 
+Source Code and Implementation Overview
+---------------------------------------
+
+Although written in C, the code is structured similarly to object-oriented 
+software. Most header files in the source directory (src) have a similar format 
+where a structure that represents an object type is declared first, followed by 
+functions that act on this type. The implementation of these functions is 
+located in the source file with the same root name as the header file. 
+Inheritance is implemented by the structure that represents a derived object 
+type having the structure of the parent type as its first member.
+
+* A scene (`scene_t` - scene.c/.h):
+    * Contains a collection of things (`thing_t` - thing.c/.h)
+        * Things can be critters (`critter_t` - critter.c/.h)
+            * Contains a genome (`genome_t` - genome.c/.h)
+            * Contains the computed output of the critter's brain (`brain_control_t` - brain.c/.h)
+        * Things can be objects that bounce on the scene outer walls (`boing_t` - boing.c/.h)
+            * Things that bounce can be food (`food_t` - food.c/.h)
+            * Things that bounce can be dangers (`danger_t` - danger.c/.h)
+* A GUI window (`window_t` - window.c/.h):
+    * Contains a scene that is rendered on screen.
+* A breeder (`breeder_t` - breeder.c/.h):
+    * Contains a collection of one or more worker threads (`thread_state_t` - breeder.c)
+        * Contains a scene where critters are simulated
+        * Contains a list of critters that needs to be simulated to evaluate
+          the fitness function.
+        * Contains a list of critters that have already been simulated.
+
+The `main()` function located in critters.c (not to be confused with critter.c) 
+instanciates one window and one breeder. Once started, the breeder performs 
+its work on one or more worker threads while the `main()` function calls the 
+update function of the window's scene in a loop. Every 20 seconds, the `main()` 
+picks the five best critters from the breeder's latest generation and replaces 
+the critters in the window's scene with them.
+
 Notes
 -----
 
 I reused the AVL tree implementation (**src/tree.c**) which I wrote for another 
 personal project that I started but never published, which is why it looks 
-somewhat overkill for this purpose and less well-integrated than the rest of the
+somewhat overkill for this purpose and less well integrated than the rest of the
 code.
