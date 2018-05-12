@@ -32,19 +32,32 @@
 #include <stdbool.h>
 #include "genome.h"
 
+/* Breeding procedure: First, the genomes with the lowest fitness score are
+ * discarded. Then, a pool of genomes is created by picking the genomes with
+ * top fitness score, then picking a few other genomes randomly, and finally
+ * adding a few randomly-generated novel genomes. Genomes with top fitness score
+ * are added multiple times to increase the probability they get chosen. Once
+ * the pool has been created, pairs of genomes are selected randomly with
+ * uniform distribution within that pool for recombination. */
 
+/* Number of genomes in a generation */
 #define BREEDER_POPULATION_SIZE     200
 
+/* Number of selected genomes with top fitness score */
 #define BREEDER_BEST_KEEP             9
 
-#define BREEDER_BEST_PRIORITY         4
-
+/* Number of randomly-selected genomes */
 #define BREEDER_RAND_KEEP            48
 
+/* Number of novel randomly-generated genomes */
 #define BREEDER_RAND_NEW              6
+
+/* Weight of top fitness score genomes (i.e. how many time each is added to the pool) */
+#define BREEDER_BEST_PRIORITY         4
 
 #define BREEDER_POOL_SIZE           (BREEDER_BEST_KEEP * BREEDER_BEST_PRIORITY + BREEDER_RAND_KEEP + BREEDER_RAND_NEW)
 
+/* Number of genomes with the lowest fitness score that are discarded */
 #define BREEDER_WORST_DISCARD        50
 
 #define BREEDER_SIM_TIME             40 /* in seconds */
@@ -53,8 +66,10 @@
 
 #define BREEDER_SIM_STEPS           (BREEDER_SIM_TIME * 1000 / BREEDER_TIME_STEP)
 
+/* Fitness score: number of points gained each time food is captured */
 #define BREEDER_FOOD_COST           1.0
 
+/* Fitness score: number of points gained (negative for loss) each time the critter is captured */
 #define BREEDER_DANGER_COST         -50.0
 
 
