@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include "genome.h"
 
-/* Breeding procedure: First, the genomes with the lowest fitness score are
+/* Selection procedure: First, the genomes with the lowest fitness score are
  * discarded. Then, a pool of genomes is created by picking the genomes with
  * top fitness score, then picking a few other genomes randomly, and finally
  * adding a few randomly-generated novel genomes. Genomes with top fitness score

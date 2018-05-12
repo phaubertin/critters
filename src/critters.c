@@ -129,6 +129,8 @@ int main(void) {
                     exit(EXIT_SUCCESS);
                 
                 case SDLK_d:
+                    /* Perform all text output under lock to prevent output from
+                     * multiple threads being mixed together. */
                     breeder_lock(breeder);
                     scene_critter = scene_first_critter(scene);
                     genome_dump(scene_critter->genome);
