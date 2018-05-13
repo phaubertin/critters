@@ -221,35 +221,58 @@ int breeder_unlock(breeder_t *breeder) {
 
 
 bool breeder_next_generation(breeder_t *breeder) {
-    genome_t         *gene_pool[BREEDER_POOL_SIZE];
-    genome_t        **gene_ptr;
-    genome_t         *genome;
-    critter_t        *critter;
-    thread_state_t   *thread;    
-    int               idx, idy;
-    int               thread_idx;
-    float             fitness;
+    qrt_tree_t            population;
+    genome_t             *gene_pool[BREEDER_POOL_SIZE];
+    genome_t            **gene_ptr;
+    genome_t             *genome;
+    critter_t            *critter;
+    thread_state_t       *thread;
+    breeder_iterator_t   *iter;
+    int                   idx, idy;
+    int                   thread_idx;
+    float                 fitness;
     
-    gene_ptr = &gene_pool[0];
+    /* copy population so we don't modify the original */
+    (void)qrt_tree_init(&population);
+    
+    breeder_lock(breeder);
+    iter    = breeder_iterator_new(breeder);
+    
+    if(iter == NULL) {
+        breeder_unlock(breeder);
+        return false;
+    }
+    
+    genome = breeder_iterator_current(iter);
+    
+    while(genome != NULL) {
+        fitness = breeder_iterator_fitness(iter);
+        qrt_tree_add_value_duplicate(&population, fitness, genome);
+
+        genome   = breeder_iterator_next(iter);
+    }
+    
+    breeder_iterator_free(iter);
+    breeder_unlock(breeder);
     
     /* discard the worst */
     for(idx = 0; idx < BREEDER_WORST_DISCARD; ++idx) {
-        genome_free( qrt_tree_pop_min(breeder->population) );
+        qrt_tree_pop_min(&population);
     }
     
     /* build gene pool */
+    gene_ptr = &gene_pool[0];
+    
     for(idx = 0; idx < BREEDER_BEST_KEEP; ++idx) {
-        genome = qrt_tree_pop_max(breeder->population);
+        genome = qrt_tree_pop_max(&population);
         
         for(idy = 0; idy < BREEDER_BEST_PRIORITY; ++idy) {
-            *(gene_ptr++) = genome_clone(genome);
+            *(gene_ptr++) = genome;
         }
-        
-        genome_free(genome);
     }
     
     for(idx = 0; idx < BREEDER_RAND_KEEP; ++idx) {
-        genome = qrt_tree_pop_random(breeder->population);
+        genome = qrt_tree_pop_random(&population);
         
         *(gene_ptr++) = genome;
     }
@@ -264,6 +287,8 @@ bool breeder_next_generation(breeder_t *breeder) {
         genome_make_random(genome);
         *(gene_ptr++) = genome;
     }
+    
+    qrt_tree_finalize(&population, NULL, NULL);
     
     /* simulate genomes */
     for(thread_idx = 0; thread_idx < breeder->thread_n; ++thread_idx) {
@@ -329,11 +354,6 @@ bool breeder_next_generation(breeder_t *breeder) {
     }
     
     breeder_unlock(breeder);
-    
-    /* free gene pool */
-    for(idx = 0; idx < BREEDER_POOL_SIZE; ++idx) {
-        genome_free(gene_pool[idx]);
-    }
     
     return true;
 }
