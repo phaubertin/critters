@@ -94,6 +94,8 @@ float breeder_fitness_n(breeder_t *breeder, int n);
 
 int breeder_start_loop(breeder_t *breeder);
 
+void breeder_dump_population(breeder_t *breeder);
+
 
 breeder_iterator_t *breeder_iterator_new(breeder_t *breeder);
 

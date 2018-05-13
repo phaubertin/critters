@@ -137,6 +137,10 @@ int main(void) {
                     breeder_unlock(breeder);
                     break;
                     
+                case SDLK_p:
+                    breeder_dump_population(breeder);
+                    break;
+                    
                 case SDLK_r:
                     scene_shake(scene);
                     break;

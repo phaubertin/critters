@@ -43,6 +43,8 @@
 
 #define MILLISECONDS_PER_SECOND 1000
 
+#define FITNESS_FORMAT  "%10.3f"
+
 typedef struct {
     scene_t     *scene;
     int          status;
@@ -405,7 +407,7 @@ static void *loop_thread(void *param) {
             breeder_lock(breeder);
             
             printf(
-                    "generation: %6u duration (ms): %4u fitness: %10.3f\n",
+                    "generation: %6u duration (ms): %4u fitness: " FITNESS_FORMAT "\n",
                     breeder->generation,
                     interval_milliseconds(&generation_start, &ticks),
                     breeder_fitness(breeder));
@@ -428,6 +430,31 @@ int breeder_start_loop(breeder_t *breeder) {
     return pthread_create(&breeder->loop_thread, &attr, loop_thread, breeder);
 }
 
+void breeder_dump_population(breeder_t *breeder) {
+    breeder_iterator_t   *iter;
+    int                   position;
+    genome_t             *genome;
+    
+    breeder_lock(breeder);
+    iter    = breeder_iterator_new(breeder);
+    
+    if(iter != NULL) {
+        printf("position    fitness\n");
+        printf("--------    -------\n");
+        
+        genome      = breeder_iterator_current(iter);
+        position    = 1;
+        
+        while(genome != NULL) {
+            printf("%8d " FITNESS_FORMAT "\n", position, breeder_iterator_fitness(iter));
+            genome   = breeder_iterator_next(iter);
+            ++position;
+        }
+    }
+    
+    breeder_iterator_free(iter);
+    breeder_unlock(breeder);
+}
 
 struct breeder_iterator_t {
     qrt_tree_iterator_t *qrt_tree_iter;
