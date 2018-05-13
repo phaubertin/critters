@@ -107,8 +107,8 @@ randomly with uniform distribution within that pool.
 New genomes are created from each selected pair by recombination with mutation 
 (**src/genome.c**).
 
-Source Code and Implementation Overview
----------------------------------------
+Source Code Overview
+--------------------
 
 Although written in C, the code is structured similarly to object-oriented 
 software. Most header files in the source directory (src) have a similar format 
