@@ -1,4 +1,4 @@
-Critters must catch food (represented by green circles) and avoid predators
+Critters must catch food (represented by green circles) and avoid dangers
 (represented by red squares). The brain of each critter is a small feedforward
 neural network. Brains are trained in the background using a genetic algorithm.
 
@@ -68,17 +68,17 @@ Design Overview
 
 Critters have two senses: vision and smell (**src/scene.c**). Vision is limited 
 to a +/-63 degrees angle. Critters know the distance and angle of the nearest 
-food item, predator and outer wall within that angle and subject to a distance 
+food item, danger and outer wall within that angle and subject to a distance 
 limit. The closest item of each type within the visual field might not be the 
 closest overall. Critters' sense of smell allows them to know the distance of 
-the closest food item and predator omnidirectionally up to a distance limit 
+the closest food item and danger omnidirectionally up to a distance limit 
 (they cannot smell walls). That makes eight inputs (**src/stimuli.h**):
 
 * (Vision) Distance and angle of nearest food item within the visual field.
-* (Vision) Distance and angle of nearest predator within the visual field.
+* (Vision) Distance and angle of nearest danger within the visual field.
 * (Vision) Distance and angle of nearest outer wall within the visual field.
 * (Smell) Distance of nearest food item.
-* (Smell) Distance of nearest predator.
+* (Smell) Distance of nearest danger.
 
 Each critter's brain is a small feedforward artificial neural network with a 
 single hidden layer (**src/brain.c**). The two outputs of the neural network 
@@ -91,8 +91,8 @@ characteristic that is not selected for.
 Training is performed with a genetic algorithm. At each generation, each 
 critter is simulated for a short time and a fitness function is computed that 
 depends on the number of times the critter catches food or is caught by a 
-predator. For simplicity of implementation, critters are not eliminated 
-outright when they get caught by a predator, but the associated fitness cost 
+danger. For simplicity of implementation, critters are not eliminated 
+outright when they get caught by a danger, but the associated fitness cost 
 penalty coupled with the selection procedure are such that selection becomes
 very unlikely when that happens.
 
