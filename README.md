@@ -1,10 +1,10 @@
-Critters must catch food (represented by green circles) and avoid dangers
-(represented by red squares). The brain of each critter is a small feedforward
-neural network. Brains are trained in the background using a genetic algorithm.
+# Critters #
 
-The graphical user interface (GUI) is updated every 20 seconds with the five
-best brains of the latest generation (which is why the critters in the GUI are
-absolutely useless for the first 20 seconds).
+Critters must catch food (represented by green circles) and avoid dangers 
+(represented by red squares). The brain of each critter is a small feedforward 
+neural network. Brains are trained using a genetic algorithm. The graphical 
+user interface (GUI) is updated every 20 seconds with the five best brains of 
+the latest generation.
 
 ![Screenshot](https://raw.githubusercontent.com/phaubertin/critters/master/doc/screenshot.png)
 

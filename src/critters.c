@@ -65,8 +65,10 @@ int main(void) {
     window_t            *window;
     struct timeval       ticks;
     struct timeval       round_start;
+    int                  round_duration_seconds;
     int                  idx;
     int                  count;
+    bool                 updated_once;
     
     srand( time(NULL) );
     
@@ -114,6 +116,7 @@ int main(void) {
     breeder_start_loop(breeder);
     
     gettimeofday(&round_start, NULL);
+    updated_once    = false;
     
     while(1) {
         /* process SDL events (keyboard, etc.) */
@@ -155,13 +158,15 @@ int main(void) {
         window_update(window);
         window_render(window);
         
-        /* update view every 20 seconds */
+        /* update view after 2 seconds and then every 20 seconds */
         gettimeofday(&ticks, NULL);
+        round_duration_seconds = interval_milliseconds(&round_start, &ticks) / 1000;
         
-        if(interval_milliseconds(&round_start, &ticks) >= 20 * 1000) {
+        if(round_duration_seconds >= 20 || (! updated_once && round_duration_seconds >= 2)) {
             breeder_lock(breeder);
             
             gettimeofday(&round_start, NULL);
+            updated_once    = true;
             
             scene_critter = scene_first_critter(scene);
             iter = breeder_iterator_new(breeder);
