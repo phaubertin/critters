@@ -30,9 +30,6 @@
 #include <xmmintrin.h>
 #include "brain.h"
 
-#ifdef DEBUG_BRAIN
-#include <stdio.h>
-#endif
 
 /* This function and the next few ones use compiler intrinsic functions for SSE2
  * instructions that act on vectors of four floating point values. The return
@@ -186,39 +183,4 @@ void brain_control_compute(brain_control_t * restrict control, const genome_t * 
     
     control->left_speed  = acc.f[0];
     control->right_speed = acc.f[1];
-
-#ifdef DEBUG_BRAIN    
-    printf("\n");
-    printf("Stimuli:\n");
-    printf("    food_intensity:   %6.3f\n", stimuli->food_intensity);
-    printf("    food_odour:       %6.3f\n", stimuli->food_odour);
-    printf("    danger_intensity: %6.3f\n", stimuli->danger_intensity);
-    printf("    danger_odour:     %6.3f\n", stimuli->danger_odour);
-    printf("    wall_intensity:   %6.3f\n", stimuli->wall_intensity);
-    printf("    food_angle:       %6.3f\n", stimuli->food_angle);
-    printf("    danger_angle:     %6.3f\n", stimuli->danger_angle);
-    printf("    wall_angle:       %6.3f\n", stimuli->wall_angle);
-    
-    printf("Hidden layer:\n");
-    
-    for(idx = 0; idx < GENOME_GAUSSIAN_GENES; ++idx) {
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[0], hidden_layer[idx].f[0] < 0.3 ? -1 : hidden_layer[idx].f[0] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[1], hidden_layer[idx].f[1] < 0.3 ? -1 : hidden_layer[idx].f[1] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[2], hidden_layer[idx].f[2] < 0.3 ? -1 : hidden_layer[idx].f[2] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[3], hidden_layer[idx].f[3] < 0.3 ? -1 : hidden_layer[idx].f[3] > 0.7 ? 1 : 0);
-    }
-    
-    printf("\n");
-    
-    for(; idx < GENOME_HIDDEN_GENES; ++idx) {
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[0], hidden_layer[idx].f[0] < 0.3 ? -1 : hidden_layer[idx].f[0] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[1], hidden_layer[idx].f[1] < 0.3 ? -1 : hidden_layer[idx].f[1] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[2], hidden_layer[idx].f[2] < 0.3 ? -1 : hidden_layer[idx].f[2] > 0.7 ? 1 : 0);
-        printf("    %6.3f %2i\n", hidden_layer[idx].f[3], hidden_layer[idx].f[3] < 0.3 ? -1 : hidden_layer[idx].f[3] > 0.7 ? 1 : 0);
-    }
-    
-    printf("Output:\n");
-    printf("    left:  %6.3f\n", control->left_speed);
-    printf("    right: %6.3f\n", control->right_speed);
-#endif
 }
