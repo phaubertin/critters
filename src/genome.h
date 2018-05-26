@@ -33,15 +33,15 @@
 
 /* Number of neurons with a sigmoid-like activation function in the hidden layer.
  * Must be a multiple of four. Can be zero. */
-#define GENOME_HIDDEN_SIGMOID   4
+#define GENOME_HIDDEN_SIGMOID   0
 
 /* Number of neurons with a gaussian-like activation function in the hidden layer.
  * Must be a multiple of four. Can be zero. */
-#define GENOME_HIDDEN_GAUSSIAN  4
+#define GENOME_HIDDEN_GAUSSIAN  0
 
 /* Number of neurons with a rectifier activation function (ReLU) in the hidden layer.
  * Must be a multiple of four. Can be zero. */
-#define GENOME_HIDDEN_RELU      4
+#define GENOME_HIDDEN_RELU      8
 
 /* All weights are between plus or minus this value. */
 #define GENOME_WEIGHT_AMPLITUDE 20.0
