@@ -1,15 +1,15 @@
 # Critters #
 
-Critters must catch food (represented by green circles) and avoid dangers 
-(represented by red squares). The brain of each critter is a small feedforward 
-neural network. Brains are trained using a genetic algorithm to simulate 
-evolution. The graphical user interface (GUI) is updated every 20 seconds with 
-the five best brains of the latest generation.
+Critters must catch food (green circles) and avoid dangers (red squares). The 
+brain of each critter is a small feedforward neural network. Brains are trained 
+using a genetic algorithm to simulate evolution. Every 20 seconds, the five 
+best critters of the latest generation are sent to the simulation running in 
+the graphical user interface (GUI).
 
 ![Screenshot](https://raw.githubusercontent.com/phaubertin/critters/master/doc/screenshot.png)
 
-Build Requirements
-------------------
+Build and Runtime Requirements
+------------------------------
 
 This software is intended to be built on a Unix-like operating system with GCC.
 It is known to build and run on Linux and MacOS X.
@@ -23,7 +23,7 @@ CentOS, this translates to the following yum install command:
 yum install SDL SDL-devel
 ```
 
-An X86 processor is required because some parts of the software use compiler
+An x86 processor is required because some parts of the software use compiler
 intrinsics for SSE2 instructions.
 
 Build Instructions
