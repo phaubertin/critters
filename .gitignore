@@ -1,12 +1,27 @@
+# Built executable
+src/critters
+
 # object files
 *.o
 
 # GNU profiler (gprof) output
 gmon.out
 
+# Dependency information
+.deps/
+*.Po
+
 # temporary Autotools files
 configure.scan
 autoscan.log
+
+# Autoconf generated files
+config.h
+config.log
+config.status
+
+# Makefile is generated with Automake
+Makefile
 
 # local working directory 
 #
